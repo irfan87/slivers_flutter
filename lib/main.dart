@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
+import 'secondPage.dart';
+
 void main() {
   runApp(MyHomePage());
 }
@@ -63,6 +65,11 @@ class _MyHomePageBodyState extends State<MyHomePageBody> {
             leading: CircleAvatar(
               backgroundImage: NetworkImage(userListData[i]["picture"]["thumbnail"]),
             ),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                builder: (BuildContext context) => SecondPage(userListData[i])
+              ));
+            },
           );
         },
       ),
