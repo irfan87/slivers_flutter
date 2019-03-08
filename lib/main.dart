@@ -28,33 +28,43 @@ class MyHomePageBody extends StatefulWidget {
 class _MyHomePageBodyState extends State<MyHomePageBody> {
   List userListData;
 
-  String url = 'https://randomuser.me/api/';
+  String url = 'https://randomuser.me/api/?results=15';
 
   Future<String> makeRequest() async {
     var response = await http.get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-    var extractUserData =jsonDecode(response.body);
+   
 
-    userListData =extractUserData["results"];
+    setState(() {
+      var extractUserData = jsonDecode(response.body);
 
-    print(userListData[0]["name"]["first"]);
+      userListData = extractUserData["results"];
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    this.makeRequest();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text("Sliver List App"),
-        ),
+        title: Text("Sliver List"),
       ),
-      body: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: RaisedButton(
-            child: Text("Make Request"),
-            onPressed: makeRequest,
-          ),
-        ),
+      body: ListView.builder(
+        itemCount: userListData == null ? 0 : userListData.length,
+        itemBuilder:(BuildContext context, i) {
+          return ListTile(
+            title: Text(userListData[i]["name"]["first"]),
+            subtitle: Text(userListData[i]["phone"]),
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(userListData[i]["picture"]["thumbnail"]),
+            ),
+          );
+        },
       ),
     );
   }
