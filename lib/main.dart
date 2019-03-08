@@ -53,9 +53,6 @@ class _MyHomePageBodyState extends State<MyHomePageBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Sliver List"),
-      ),
       body: ListView.builder(
         itemCount: userListData == null ? 0 : userListData.length,
         itemBuilder:(BuildContext context, i) {
